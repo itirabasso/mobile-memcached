@@ -1,4 +1,5 @@
 'use strict';
+var hashring = require('hashring');
 var debug = require('debug')('mobile-memcached::cache');
 var Client = require('./lib/client.js');
 
@@ -42,21 +43,21 @@ var MeliCache = module.exports = function MeliCache(options) {
 		};
 	}
 
-	// options.servers.forEach(function(server) {
-	// 	clients[server] = createClient(server, options);
-	// });
+	options.servers.forEach(function(server) {
+		clients[server] = createClient(server, options);
+	});
 
-	// var servers = {};
-	// for (var key in clients) {
-	// 	servers[key] = 1;
-	// }
+	var servers = {};
+	for (var key in clients) {
+		servers[key] = 1;
+	}
 
-	// self.ring = new hashring(servers);
+	self.ring = new hashring(servers);
 	
-	// self.getClient = function(key) {
-	// 	var node = self.ring.get(key);
-	// 	return clients[node];		
-	// }
+	self.getClient = function(key) {
+		var node = self.ring.get(key);
+		return clients[node];		
+	}
 
 	self.get = function(key, callback) {
 		var client = self.getClient(key);
