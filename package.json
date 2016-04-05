@@ -1,0 +1,30 @@
+{
+	"name": "mobile-memcached",
+	"version": "0.1.0",
+	"description": "Distributed cached sharded over redis. According Mobile team requisites.",
+	"scripts": {
+		"check": "./node_modules/david/bin/david.js --registry http://registry.npm.ml.com/"
+	},
+	"author": "Pablo Lucadei",
+	"contributors": [
+		"Alejandro Larre",
+		"Martin Gonzalez",
+		"Ignacio M. Tirabasso"
+	],
+	"homepage": "https://github.com/itirabasso/mobile-memcached",
+    	"repository": {
+        	"type": "git",
+        	"url": "git://github.com/itirabasso/mobile-memcached.git"
+    	},
+	"license": "MIT",
+	"dependencies": {
+		"bunyan": "1.3.4",
+		"memcached": "2.2.1",
+		"jsdog-meli": "0.0.5",
+		"debug": "2.2.0",
+		"async-utils": "0.0.3"
+	},
+	"devDependencies": {
+		"david": "6.1.5"
+	}
+}
