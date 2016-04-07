@@ -23,7 +23,7 @@
 		"jsdog-meli": "0.0.5",
 		"debug": "2.2.0",
 		"async-utils": "0.0.3",
-		"hashring": "3.1.0"
+		"hashring": "3.2.x"
 	},
 	"devDependencies": {
 		"david": "6.1.5"
