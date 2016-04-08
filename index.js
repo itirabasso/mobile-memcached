@@ -30,10 +30,10 @@ var MeliCache = module.exports = function MeliCache(options) {
 	var self = {};
 	var clients = {};
 	
-	// if (options.namespace) {
-	// 	var patchRedis = require('cls-redis');
-	// 	patchRedis(options.namespace);
-	// }
+	if (options.namespace) {
+		var patchRedis = require('cls-memcached');
+		patchMemcached(options.namespace);
+	}
 
 	if (options === undefined) {
 		options = {
