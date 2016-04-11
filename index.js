@@ -56,6 +56,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 	// 	debug('server %s connected and ready', self.server_name);
 	// 	self.connection_status = STATUS.READY;
 	// })
+	self.connection_status = STATUS.READY;
 	debug('server %s connected and ready', self.server_name);
 
 	self.get = function(key, callback) {
@@ -95,12 +96,9 @@ var MeliCache = module.exports = function MeliCache(options) {
 			return callback(undefined, JSON.parse(value));
 		})));
 
-		// self.memcached_client.get(key, handle_callback(client, function (err, res) {
-		// }));
 	};
 
 	self.del = function(key, callback) {
-		// self.memcached_client.del(key, handle_callback(client, callback));
 		var self = this;
 
 		if (!self.connection_status === STATUS.READY) {
@@ -175,7 +173,6 @@ var MeliCache = module.exports = function MeliCache(options) {
 	};
 
 	self.on = function(event, listener) {
-		// client.on(event, listener);
 		var self = this;
 		self.memcached_client.on(event, function() {
 			var args = Array.prototype.slice.call(arguments).concat(self.server_name);
