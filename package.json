@@ -22,9 +22,7 @@
 		"memcached": "2.2.1",
 		"jsdog-meli": "0.0.5",
 		"debug": "2.2.0",
-		"async-utils": "0.0.3",
-		"hashring": "3.2.x",
-		"cls-memcached": "git://github.com/itirabasso/cls-memcached"
+		"async-utils": "0.0.3"
 	},
 	"devDependencies": {
 		"david": "6.1.5"

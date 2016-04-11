@@ -1,5 +1,4 @@
 'use strict';
-var hashring = require('hashring');
 var debug = require('debug')('mobile-memcached::cache');
 var Client = require('./lib/client.js');
 
@@ -30,10 +29,10 @@ var MeliCache = module.exports = function MeliCache(options) {
 	var self = {};
 	var clients = {};
 	
-	if (options.namespace) {
-		var patchRedis = require('cls-memcached');
-		patchMemcached(options.namespace);
-	}
+	// if (options.namespace) {
+	// 	var patchRedis = require('cls-memcached');
+	// 	patchMemcached(options.namespace);
+	// }
 
 	if (options === undefined) {
 		options = {
@@ -43,34 +42,28 @@ var MeliCache = module.exports = function MeliCache(options) {
 		};
 	}
 
-	options.servers.forEach(function(server) {
-		clients[server] = createClient(server, options);
-	});
+	// options.servers.forEach(function(server) {
+	// 	clients[server] = createClient(server, options);
+	// });
 
-	var servers = {};
-	for (var key in clients) {
-		servers[key] = 1;
-	}
+	// var servers = {};
+	// for (var key in clients) {
+	// 	servers[key] = 1;
+	// }
 
-	self.ring = new hashring(servers);
+	// self.ring = new hashring(servers);
 	
-	self.getClient = function(key) {
-		var node = self.ring.get(key);
-		return clients[node];		
-	}
+	var client = new Client(options);
 
 	self.get = function(key, callback) {
-		var client = self.getClient(key);
 		client.get(key, handle_callback(client, callback));
 	};
 
 	self.del = function(key, callback) {
-		var client = self.getClient(key);
 		client.del(key, handle_callback(client, callback));
 	};
 
 	self.set = function(key, value, ttl, callback) {
-		var client = self.getClient(key);
 		client.set(key, value, ttl, handle_callback(client, callback));
 	};
 
@@ -78,21 +71,24 @@ var MeliCache = module.exports = function MeliCache(options) {
 	self.remove = self.del;
 
 	self.quit = function() {
-		options.servers.forEach(function(server) {
-			clients[server].end();
-		});
+		client.end()
+		// options.servers.forEach(function(server) {
+		// 	clients[server].end();
+		// });
 	};
 
 	self.on = function(event, listener) {
-		options.servers.forEach(function(server) {
-			var client = clients[server];
-			client.on(event, listener);
-		});
+		client.on(event, listener);
+		// options.servers.forEach(function(server) {
+		// 	var client = clients[server];
+		// 	client.on(event, listener);
+		// });
 	};
 
 	self.on('error', function(error, server) {
 		debug('error: %j', error);
-		clients[server] && clients[server].reconnect();
+		client.reconnect();
+		// clients[server] && clients[server].reconnect();
 	});
 
 	return self;
