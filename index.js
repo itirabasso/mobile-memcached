@@ -48,8 +48,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 	debug('creating memcached client with options: %j', self.client_options);
 	
 	self.memcached_client = new memcached(self.client_options.servers);
-	self.server_name = self.client_options.servers_name;
-	// self.connection_status = STATUS.CONNECTING;
+	self.server_name = self.client_options.name;
 	// self.memcached_client.connect()
 	// self.memcached_client.on('ready', function() {
 	// 	debug('server %s connected and ready', self.server_name);
@@ -179,11 +178,21 @@ var MeliCache = module.exports = function MeliCache(options) {
 		});
 	};
 
-	// FIXME : Creo que no se maneja este event!
-	self.on('error', function(error, server) {
+	self.on('remove', function(details) {
+		debug('removing the server from our consistent hashing: %j', details);
+	}
+
+	self.on('failure', function(error, server) {
 		debug('error: %j', error);
-		client.reconnect();
+		self.memcached_client.reconnect();
 	});
+
+	self.on('reconnecting', function(details) {
+		debug("Total downtime caused by server %s : %s ms", details.server, details.totalDownTime);
+	});
+
+
+
 
 	return self;
 }

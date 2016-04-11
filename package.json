@@ -1,15 +1,15 @@
 {
 	"name": "mobile-memcached",
-	"version": "0.1.0",
-	"description": "Distributed cached sharded over redis. According Mobile team requisites.",
+	"version": "0.2.0",
+	"description": "Distributed cached sharded over memcached. According Mobile team requisites.",
 	"scripts": {
 		"check": "./node_modules/david/bin/david.js --registry http://registry.npm.ml.com/"
 	},
-	"author": "Pablo Lucadei",
+	"author": "Ignacio M. Tirabasso",
 	"contributors": [
 		"Alejandro Larre",
 		"Martin Gonzalez",
-		"Ignacio M. Tirabasso"
+		"Pablo Lucadei"
 	],
 	"homepage": "https://github.com/itirabasso/mobile-memcached",
     	"repository": {
