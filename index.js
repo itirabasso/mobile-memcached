@@ -65,7 +65,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 		debug('getting key %s from server %s', key, self.server_name);
 
 		self.memcached_client.get(key, asyncu.fuse(self.client_options.client_timeout, 
-			handle_response(self.memcached_client, function(error, value) {
+			handle_callback(self.memcached_client, function(error, value) {
 			
 			var total = new Date() - start;
 			var opResult = error && 'fail' || 'success';
@@ -100,7 +100,36 @@ var MeliCache = module.exports = function MeliCache(options) {
 	};
 
 	self.del = function(key, callback) {
-		self.memcached_client.del(key, handle_callback(client, callback));
+		// self.memcached_client.del(key, handle_callback(client, callback));
+		var self = this;
+
+		if (!self.connection_status === STATUS.READY) {
+			return callback(NOT_READY_ERROR);
+		}
+		
+		var start = new Date();
+
+		debug('removing key %s from server %s', name, key, self.server_name);
+		
+		self.memcached_client.del(key, asyncu.fuse(self.client_options.client_timeout,
+			handle_callback(self.memcached_client, function(error, value) {
+			
+			var total = new Date() - start;
+			var opResult = error && 'fail' || 'success';
+
+			self.jsdog.recordCompoundMetric('application.mobile.api.cache.time', total, [
+				'result:' + opResult,
+				'method:remove',
+				'cache:' + self.client_options.name,
+				'server:' + self.server_name
+			]);
+
+			if (error) {
+				return callback(error);
+			}
+
+			return callback();
+		})));
 	};
 
 	self.set = function(key, value, ttl, callback) {
@@ -118,7 +147,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 
 		debug('setting key %s in server %s', key, self.server_name);
 		self.memcached_client.set(key, JSON.stringify(value), ttl, asyncu.fuse(self.client_options.client_timeout,
-			handle_response(self.memcached_client, function(error) {
+			handle_callback(self.memcached_client, function(error) {
 			var total = new Date() - start;
 			var opResult = error && 'fail' || 'success';
 
@@ -142,7 +171,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 	self.remove = self.del;
 
 	self.quit = function() {
-		client.end()
+		this.memcached_client.end()
 	};
 
 	self.on = function(event, listener) {
