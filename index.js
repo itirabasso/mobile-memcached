@@ -37,6 +37,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 	var memcached = require('memcached');
 	self.jsdog = require('jsdog-meli').configure();
 
+	// FIXME : Remapear opciones (y agregar las disponibles para memcached)
 	self.client_options = options;
 	self.client_options.client_timeout = options.client_timeout || 50;//timeout to assume connection is gone
 	self.client_options.socket_keepalive = options.socket_keepalive || true;//self documented
@@ -46,8 +47,6 @@ var MeliCache = module.exports = function MeliCache(options) {
 	
 	debug('creating memcached client with options: %j', self.client_options);
 	
-	// FIXME : Add server name
-	//defaults
 	self.memcached_client = new memcached(self.client_options.servers);
 	self.server_name = self.client_options.servers_name;
 	// self.connection_status = STATUS.CONNECTING;
@@ -180,6 +179,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 		});
 	};
 
+	// FIXME : Creo que no se maneja este event!
 	self.on('error', function(error, server) {
 		debug('error: %j', error);
 		client.reconnect();
