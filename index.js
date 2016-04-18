@@ -81,7 +81,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 				return callback(error);
 			}
 			
-			var result = value ? 'hit' : 'miss';
+			var result = value === undefined ? 'hit' : 'miss';
 			self.jsdog.recordCompoundMetric('application.mobile.api.cache.result', 1, [
 				'result:' + result,
 				'method:get',
@@ -91,7 +91,9 @@ var MeliCache = module.exports = function MeliCache(options) {
 			
 			debug('successful get key %s [result: %s] value: %s', key, result, value);
 
-			return callback(undefined, JSON.parse(value));
+			value = value === undefined ? undefined : JSON.parse(value);
+
+			return callback(undefined, value);
 		})));
 
 	};
