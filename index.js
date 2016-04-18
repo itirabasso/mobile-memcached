@@ -191,8 +191,5 @@ var MeliCache = module.exports = function MeliCache(options) {
 		debug("Total downtime caused by server %s : %s ms", details.server, details.totalDownTime);
 	});
 
-
-
-
 	return self;
 }
