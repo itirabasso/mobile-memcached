@@ -182,7 +182,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 
 	self.on('remove', function(details) {
 		debug('removing the server from our consistent hashing: %j', details);
-	}
+	});
 
 	self.on('failure', function(error, server) {
 		debug('error: %j', error);
