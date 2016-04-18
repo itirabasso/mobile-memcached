@@ -1,6 +1,6 @@
 {
 	"name": "mobile-memcached",
-	"version": "0.2.0",
+	"version": "0.2.2",
 	"description": "Distributed cached sharded over memcached. According Mobile team requisites.",
 	"scripts": {
 		"check": "./node_modules/david/bin/david.js --registry http://registry.npm.ml.com/"
