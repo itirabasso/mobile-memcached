@@ -23,7 +23,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 	var self = {};
 	
 	// if (options.namespace) {
-	// 	var patchRedis = require('cls-memcached');
+	// 	var patchMemcached = require('cls-memcached');
 	// 	patchMemcached(options.namespace);
 	// }
 
@@ -105,7 +105,7 @@ var MeliCache = module.exports = function MeliCache(options) {
 		
 		var start = new Date();
 
-		debug('removing key %s from server %s', name, key, self.server_name);
+		debug('removing key %s from server %s', key, self.server_name);
 		
 		self.memcached_client.del(key, asyncu.fuse(self.client_options.client_timeout,
 			handle_callback(self.memcached_client, function(error, value) {
